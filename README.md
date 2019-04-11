@@ -5,11 +5,13 @@
 * Felipe Macías.
 * Camila White. 
 
-# Extracción
+# Proceso ETL
+
+## Extracción
 hablar del proceso con country sakila
 
-# Transformación
+## Transformación
 Hablar de las agregaciones, las preguntas hechas del negocio y las reglas de transformación(desnormalización)
 
-# Carga
+## Carga
 Los dos scripts que se hicieron del OLAP
