@@ -58,7 +58,6 @@ CREATE TABLE Pentaho.fact_rental (
     date_id INT,
     cantidad_rentas_por_dia_del_mes INT,
     cantidad_rentas_por_ano INT,
-    PRIMARY KEY (rental_id),
     FOREIGN KEY (customer_id) REFERENCES dim_customer(customer_id),
     FOREIGN KEY (store_id) REFERENCES dim_store(store_id), 
     FOREIGN KEY (film_id) REFERENCES dim_film(film_id), 
