@@ -16,12 +16,12 @@ Pasos a seguir para ejecutar el trabajo:
 ## 3. Realizar conexión en Pentaho a cada uno de los esquemas.
 En esta parte se debe cambiar la configuración de la base de datos (como se muestra en la imagen) según los datos que tiene en su Workbench. 
 
-![](./Pentaho/conexion.png)
+![](/Pentaho/conexion.png)
 
 ## 4. Ejecución.
 Para ambos archivos, se deben realizar los siguientes pasos.
 
-![](./Pentaho/disable.jpeg)
+![](/Pentaho/disable.jpeg)
 
 * Correr el .ktr con lo señalado en la imagen en modo enable (flechas de color azul).
 
