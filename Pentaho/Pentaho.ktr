@@ -441,10 +441,10 @@
     <server>localhost</server>
     <type>MYSQL</type>
     <access>Native</access>
-    <database>Pentaho</database>
+    <database>pentaho</database>
     <port>3306</port>
     <username>root</username>
-    <password>Encrypted 2be98afc86aa7f288af088d49ebc3f89e</password>
+    <password>Encrypted 2be98afc86ae99d88a214a7648fcba19e</password>
     <servername />
     <data_tablespace />
     <index_tablespace />
@@ -499,7 +499,7 @@
     <database>sakila</database>
     <port>3306</port>
     <username>root</username>
-    <password>Encrypted 2be98afc86aa7f288af088d49ebc3f89e</password>
+    <password>Encrypted 2be98afc86ae99d88a214a7648fcba19e</password>
     <servername />
     <data_tablespace />
     <index_tablespace />
@@ -550,22 +550,22 @@
     <hop>
       <from>rental</from>
       <to>Table output</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>customer</from>
       <to>dim_Cust</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Film</from>
       <to>dim_Film</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>store</from>
       <to>dim_Store</to>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
     </hop>
     <hop>
       <from>ids date</from>
@@ -593,13 +593,38 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>cantidad_rentas_por_mes</from>
+      <to>Sort rows 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>rentas_dia_del_mes</from>
+      <to>Multiway merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 3</from>
+      <to>Multiway merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>cantidad_rentas_por_ano</from>
+      <to>Multiway merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Multiway merge join</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>Select values</from>
       <to>Sort rows 4</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>cantidad_rentas_por_ano</from>
-      <to>Merge join 2</to>
+      <from>Select values 2</from>
+      <to>Sort rows 5</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -608,33 +633,13 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 2</from>
-      <to>Sort rows 5</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>rentas_dia_del_mes</from>
-      <to>Merge join 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows 5</from>
-      <to>Merge join 3</to>
+      <to>Merge join 2</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Merge join 3</from>
-      <to>Select values 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Select values 3</from>
-      <to>Sort rows 6</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Sort rows 6</from>
-      <to>fact_payment</to>
+      <from>Merge join 2</from>
+      <to>Table output 2</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -670,6 +675,269 @@ INNER JOIN sakila.category AS category ON film_category.category_id = category.c
     <GUI>
       <xloc>48</xloc>
       <yloc>256</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Merge join</name>
+    <type>MergeJoin</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <join_type>INNER</join_type>
+    <step1>Sort rows 2 3 2</step1>
+    <step2>Sort rows 2 3</step2>
+    <keys_1>
+      <key>rental_date</key>
+    </keys_1>
+    <keys_2>
+      <key>rental_date</key>
+    </keys_2>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>608</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Multiway merge join</name>
+    <type>MultiwayMergeJoin</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <join_type>INNER</join_type>
+    <step0>rentas_dia_del_mes</step0>
+    <step1>Sort rows 3</step1>
+    <step2>cantidad_rentas_por_ano</step2>
+    <number_input>3</number_input>
+    <keys>
+      <key>customer_id</key>
+      <key>customer_id</key>
+      <key>customer_id</key>
+    </keys>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1040</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>rental_date</name>
+      </remove>
+      <remove>
+        <name>rental_date_1</name>
+      </remove>
+    </fields>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>720</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <select_unspecified>N</select_unspecified>
+      <remove>
+        <name>customer_id_1</name>
+      </remove>
+      <remove>
+        <name>customer_id_2</name>
+      </remove>
+    </fields>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1168</xloc>
+      <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 2 3</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>rental_date</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>464</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 2 3 2</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>rental_date</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>624</xloc>
+      <yloc>304</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows 3</name>
+    <type>SortRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory />
+    <compress>N</compress>
+    <compress_variable />
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>customer_id</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -785,11 +1053,11 @@ INNER JOIN sakila.category AS category ON film_category.category_id = category.c
       <schema_name />
     </partitioning>
     <connection>sakila</connection>
-    <sql>SELECT DISTINCT customer.customer_id, count(*) as cantidad_rentas_por_ano 
+    <sql>SELECT DISTINCT customer.customer_id, count(*) as c 
 FROM rental
 INNER JOIN customer ON customer.customer_id = rental.customer_id
 GROUP BY Year(rental.rental_date), customer.customer_id
-ORDER BY customer.customer_id ASC, cantidad_rentas_por_ano;</sql>
+ORDER BY customer.customer_id ASC,c ;</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -804,8 +1072,44 @@ ORDER BY customer.customer_id ASC, cantidad_rentas_por_ano;</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
-      <yloc>192</yloc>
+      <xloc>880</xloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>cantidad_rentas_por_mes</name>
+    <type>TableInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>sakila</connection>
+    <sql>SELECT DISTINCT customer.customer_id, count(*) as c 
+FROM rental
+INNER JOIN customer ON customer.customer_id = rental.customer_id
+GROUP BY month(rental.rental_date), customer.customer_id
+ORDER BY customer.customer_id ASC,c ;</sql>
+    <limit>0</limit>
+    <lookup />
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+    <attributes />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>816</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1062,8 +1366,8 @@ INNER JOIN film ON inventory.film_id = film.film_id;</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>496</xloc>
-      <yloc>368</yloc>
+      <xloc>464</xloc>
+      <yloc>384</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1079,7 +1383,7 @@ INNER JOIN film ON inventory.film_id = film.film_id;</sql>
       <schema_name />
     </partitioning>
     <connection>pentaho</connection>
-    <sql>SELECT DISTINCT dim_time.date_id, dim_time.rental_date
+    <sql>SELECT dim_time.date_id, dim_time.rental_date
 FROM dim_time;</sql>
     <limit>0</limit>
     <lookup />
@@ -1095,8 +1399,8 @@ FROM dim_time;</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>320</xloc>
-      <yloc>272</yloc>
+      <xloc>464</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1116,7 +1420,7 @@ FROM dim_time;</sql>
 	NULL AS date_id,
 	r.rental_date AS rental_date,
     DATE(r.rental_date) AS is_date,
-    DATE_FORMAT(r.rental_date, '%Y%M%D') AS full_date,
+    DATE_FORMAT(r.rental_date, '%Y%M%D') AS full_date_description,
     DAY(r.rental_date) AS is_day,
     MONTH(r.rental_date) AS is_month,
     YEAR(r.rental_date) AS is_year,
@@ -1160,10 +1464,11 @@ FROM sakila.rental AS r;</sql>
       <schema_name />
     </partitioning>
     <connection>sakila</connection>
-    <sql>SELECT DISTINCT rental_id, count(*) as rentas_dia_del_mes
+    <sql>SELECT DISTINCT customer.customer_id, count(*) as c 
 FROM rental
-GROUP BY day(rental.rental_date), month(rental.rental_date), rental_id 
-ORDER BY rental_id ASC, rentas_dia_del_mes;</sql>
+INNER JOIN customer ON customer.customer_id = rental.customer_id
+GROUP BY day(rental.rental_date), month(rental.rental_date), customer.customer_id
+ORDER BY customer.customer_id ASC,c ;</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
@@ -1178,8 +1483,8 @@ ORDER BY rental_id ASC, rentas_dia_del_mes;</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1104</xloc>
-      <yloc>192</yloc>
+      <xloc>880</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1221,158 +1526,6 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
     </GUI>
   </step>
   <step>
-    <name>Sort rows 2 3</name>
-    <type>SortRows</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory />
-    <compress>N</compress>
-    <compress_variable />
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>rental_date</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>464</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 2 3 2</name>
-    <type>SortRows</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory />
-    <compress>N</compress>
-    <compress_variable />
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>rental_date</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>624</xloc>
-      <yloc>304</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join</name>
-    <type>MergeJoin</type>
-    <description />
-    <distribute>N</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <join_type>INNER</join_type>
-    <step1>Sort rows 2 3 2</step1>
-    <step2>Sort rows 2 3</step2>
-    <keys_1>
-      <key>rental_date</key>
-    </keys_1>
-    <keys_2>
-      <key>rental_date</key>
-    </keys_2>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>592</xloc>
-      <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <remove>
-        <name>rental_date</name>
-      </remove>
-      <remove>
-        <name>rental_date_1</name>
-      </remove>
-    </fields>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>688</xloc>
-      <yloc>176</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Sort rows 4</name>
     <type>SortRows</type>
     <description />
@@ -1409,42 +1562,8 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
       </output>
     </remotesteps>
     <GUI>
-      <xloc>880</xloc>
-      <yloc>384</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Merge join 2</name>
-    <type>MergeJoin</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <join_type>INNER</join_type>
-    <step1>cantidad_rentas_por_ano</step1>
-    <step2>Sort rows 4</step2>
-    <keys_1>
-      <key>customer_id</key>
-    </keys_1>
-    <keys_2>
-      <key>customer_id</key>
-    </keys_2>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>960</xloc>
-      <yloc>288</yloc>
+      <xloc>720</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1468,7 +1587,7 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
     <unique_rows>N</unique_rows>
     <fields>
       <field>
-        <name>rental_id</name>
+        <name>customer_id</name>
         <ascending>Y</ascending>
         <case_sensitive>N</case_sensitive>
         <collator_enabled>N</collator_enabled>
@@ -1485,13 +1604,13 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1104</xloc>
-      <yloc>288</yloc>
+      <xloc>1168</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Merge join 3</name>
+    <name>Merge join 2</name>
     <type>MergeJoin</type>
     <description />
     <distribute>Y</distribute>
@@ -1502,13 +1621,13 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
       <schema_name />
     </partitioning>
     <join_type>INNER</join_type>
-    <step1>Sort rows 5</step1>
-    <step2>rentas_dia_del_mes</step2>
+    <step1>Sort rows 4</step1>
+    <step2>Sort rows 5</step2>
     <keys_1>
-      <key>rental_id</key>
+      <key>customer_id</key>
     </keys_1>
     <keys_2>
-      <key>rental_id</key>
+      <key>customer_id</key>
     </keys_2>
     <attributes />
     <cluster_schema />
@@ -1519,89 +1638,13 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1216</xloc>
-      <yloc>256</yloc>
+      <xloc>928</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Select values 3</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <select_unspecified>N</select_unspecified>
-      <remove>
-        <name>customer_id_1</name>
-      </remove>
-      <remove>
-        <name>rental_id_1</name>
-      </remove>
-    </fields>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1312</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Sort rows 6</name>
-    <type>SortRows</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>out</prefix>
-    <sort_size>1000000</sort_size>
-    <free_memory />
-    <compress>N</compress>
-    <compress_variable />
-    <unique_rows>N</unique_rows>
-    <fields>
-      <field>
-        <name>rental_id</name>
-        <ascending>Y</ascending>
-        <case_sensitive>N</case_sensitive>
-        <collator_enabled>N</collator_enabled>
-        <collator_strength>0</collator_strength>
-        <presorted>N</presorted>
-      </field>
-    </fields>
-    <attributes />
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1408</xloc>
-      <yloc>256</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>fact_payment</name>
+    <name>Table output 2</name>
     <type>TableOutput</type>
     <description />
     <distribute>Y</distribute>
@@ -1615,7 +1658,7 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
     <schema />
     <table>fact_rental</table>
     <commit>1000</commit>
-    <truncate>Y</truncate>
+    <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1630,16 +1673,12 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
     <return_field />
     <fields>
       <field>
-        <column_name>customer_id</column_name>
-        <stream_name>customer_id</stream_name>
-      </field>
-      <field>
-        <column_name>cantidad_rentas_por_ano</column_name>
-        <stream_name>cantidad_rentas_por_ano</stream_name>
-      </field>
-      <field>
         <column_name>rental_id</column_name>
         <stream_name>rental_id</stream_name>
+      </field>
+      <field>
+        <column_name>customer_id</column_name>
+        <stream_name>customer_id</stream_name>
       </field>
       <field>
         <column_name>store_id</column_name>
@@ -1655,7 +1694,15 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
       </field>
       <field>
         <column_name>cantidad_rentas_por_dia_del_mes</column_name>
-        <stream_name>rentas_dia_del_mes</stream_name>
+        <stream_name>c</stream_name>
+      </field>
+      <field>
+        <column_name>cantidad_rentas_por_mes</column_name>
+        <stream_name>c_1</stream_name>
+      </field>
+      <field>
+        <column_name>cantidad_rentas_por_ano</column_name>
+        <stream_name>c_2</stream_name>
       </field>
     </fields>
     <attributes />
@@ -1667,8 +1714,8 @@ INNER JOIN sakila.country AS country ON city.country_id = country.country_id;</s
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1504</xloc>
-      <yloc>256</yloc>
+      <xloc>928</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
