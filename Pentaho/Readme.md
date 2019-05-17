@@ -21,7 +21,7 @@ En esta parte se debe cambiar la configuración de la base de datos (como se mue
 ## 4. Ejecución.
 Para ambos archivos, se deben realizar los siguientes pasos.
 
-![](./Pentaho/disable.png)
+![](./Pentaho/disable.jpeg)
 
 * Correr el .ktr con lo señalado en la imagen en modo enable (flechas de color azul).
 
